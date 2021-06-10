@@ -1,1 +1,1 @@
-This project was bootstrapped with Create React App to play around with Jenkins, Docker and AWS.
+This is a simple project, bootstrapped with Create React App and created to play around with Jenkins, Docker and AWS.
