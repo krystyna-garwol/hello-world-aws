@@ -1,7 +1,9 @@
 pipeline { 
     environment {
-        registry = '0028e93734a9/hello-world'
-        registryCredential = 'dockerhub'
+        AWS_ACCOUNT_ID = "104430712741"
+        AWS_DEFAULT_REGION = "eu-west-1"
+        IMAGE_REPO_NAME = "hello-world-aws"
+        REPO_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
         dockerImage = ''
     }
 
@@ -23,26 +25,27 @@ pipeline {
                 sh 'npm test'
             }
         }
+        stage('Log into AWS ECR') {
+            steps {
+                script {
+                    sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+                }
+            }
+        }
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                    sh "docker build -t ${IMAGE_REPO_NAME}:$BUILD_NUMBER ."
                 }
             }
         }
-        stage('Deploy Image to dockerhub') {
+        stage('Deploy Docker Image to AWS ECR') {
             steps {
                 script {
-                    docker.withRegistry( '', registryCredential) {
-                        dockerImage.push()
-                        }
+                    sh "docker tag ${IMAGE_REPO_NAME}:$BUILD_NUMBER ${REPO_URI}:$BUILD_NUMBER"
+                    sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:$BUILD_NUMBER"
                 }
             }
         }
-        stage('Removed Unused Image') {
-            steps {
-                sh "docker rmi $registry:$BUILD_NUMBER" 
-            }
-        }  
     }
 }
