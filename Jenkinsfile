@@ -2,7 +2,7 @@ pipeline {
     environment {
         AWS_ACCOUNT_ID = "104430712741"
         AWS_DEFAULT_REGION = "eu-west-1"
-        IMAGE_REPO_NAME = "hello-world-aws"
+        IMAGE_REPO_NAME = "hello-world"
         REPO_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
         dockerImage = ''
     }
