@@ -1,6 +1,6 @@
 Similarly to my other repository called 'hello-world-dockerhub', this project was bootstrapped with Create React App, and it is literally just one page saying 'Hello World'.
 * This time I wanted to play around with creating a Docker image and pushing it to AWS ECR (Elastic Container Registry), all using Jenkins Pipeline
-* Again, all the steps are automated and pipeline is triggered on push to master
+* Again, all the steps are automated and pipeline is triggered on push to master since it is a very small application. If I was working off branches and creating pull requests, I would have multibranch pipeline in place. All the testing would have happened as soon as pull request was created. Only then, after all tests were successful, on push to master, I would deploy to AWS ECS.
 
 
 <div style="text-align:center"><img width="1000" alt="jenkins pipeline" src="https://user-images.githubusercontent.com/72078274/121530395-49f69780-c9f5-11eb-8e63-95f4d9461d3e.png"></div>
